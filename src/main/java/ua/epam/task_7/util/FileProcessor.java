@@ -17,7 +17,7 @@ public class FileProcessor {
         this.fileName = fileName;
     }
 
-    public List<String> readFileLines() throws FileProcessingException {
+    public List<String> readFile() throws FileProcessingException {
         List<String> lines = new ArrayList<>();
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName))) {
             String s;
@@ -25,18 +25,18 @@ public class FileProcessor {
                 lines.add(s);
             }
         } catch (IOException e) {
-            throw new FileProcessingException("Can't read the file " + fileName);
+            throw new FileProcessingException("Can`t read file " + fileName);
         }
         return lines;
     }
 
-    public void writeFile(Collection<String> collection) throws FileProcessingException {
+    public void writeToFile(Collection<String> collection) throws FileProcessingException {
         try (PrintWriter printWriter = new PrintWriter(fileName)) {
-            for (String s : collection) {
-                printWriter.println(s);
+            for (String string : collection) {
+                printWriter.println(string);
             }
         } catch (IOException e) {
-            throw new FileProcessingException("Can't write to file " + fileName);
+            throw new FileProcessingException("Can`t write to file " + fileName);
         }
     }
 }

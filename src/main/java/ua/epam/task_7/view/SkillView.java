@@ -1,22 +1,12 @@
 package ua.epam.task_7.view;
 
 import ua.epam.task_7.controller.SkillController;
+import ua.epam.task_7.messages.Messages;
 import ua.epam.task_7.util.InputReader;
 
 public class SkillView {
     private InputReader inputReader;
-    private SkillController skillController = new SkillController();
-
-    private String menu = "Available options (type in a number):\n" +
-            "1. Print all skills\n" +
-            "2. Show skill by id\n" +
-            "3. Add a new skill\n" +
-            "4. Update a skill\n" +
-            "5. Exit.\n";
-
-    private String skillNameRequest = "Enter the name of a skill";
-    private String idRequest = "\nEnter skill ID: ";
-    private String incorrectInput = "Incorrect input";
+    private SkillController controller = new SkillController();
 
     public SkillView(InputReader reader) {
         this.inputReader = reader;
@@ -24,39 +14,39 @@ public class SkillView {
 
     public void viewRun() {
         outer:while (true) {
-            System.out.println(menu);
+            System.out.println(Messages.SKILL_MENU.getMessage());
             int choice = inputReader.getIntInput();
 
             switch (choice) {
                 case 1: {
-                    System.out.println(skillController.getAll());
+                    System.out.println(controller.getAll());
                     break;
                 }
                 case 2: {
-                    System.out.print(idRequest);
+                    System.out.print(Messages.SKILL_ID_REQUEST.getMessage());
                     int input = inputReader.getIntInput();
-                    System.out.println(skillController.getById(input));
+                    System.out.println(controller.getById(input));
                     break;
                 }
                 case 3: {
-                    System.out.println(skillNameRequest);
-                    String name = inputReader.getStringInput();
-                    System.out.println(skillController.addSkill(name));
+                    System.out.println(Messages.SKILL_REQUEST.getMessage());
+                    String name = inputReader.getInput();
+                    System.out.println(controller.addSkill(name));
                     break;
                 }
                 case 4: {
-                    System.out.println(idRequest);
+                    System.out.println(Messages.SKILL_ID_REQUEST.getMessage());
                     int input = inputReader.getIntInput();
-                    System.out.println(skillNameRequest);
-                    String name = inputReader.getStringInput();
-                    System.out.println(skillController.update(input, name));
+                    System.out.println(Messages.SKILL_REQUEST.getMessage());
+                    String name = inputReader.getInput();
+                    System.out.println(controller.update(input, name));
                     break;
                 }
                 case 5: {
                     break outer;
                 }
                 default: {
-                    System.out.println(incorrectInput);
+                    System.out.println(Messages.WRONG_INPUT.getMessage());
                 }
             }
         }

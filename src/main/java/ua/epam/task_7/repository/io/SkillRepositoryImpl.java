@@ -1,7 +1,7 @@
-package ua.epam.task_7.repository.repositoryImpl;
+package ua.epam.task_7.repository.io;
 
 import ua.epam.task_7.exceptions.FileProcessingException;
-import ua.epam.task_7.exceptions.RecordDoesNotExistException;
+import ua.epam.task_7.exceptions.DoesNotExistException;
 import ua.epam.task_7.model.Skill;
 import ua.epam.task_7.repository.SkillRepository;
 import ua.epam.task_7.util.FileProcessor;
@@ -9,19 +9,18 @@ import ua.epam.task_7.util.FileProcessor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class SkillRepositoryImpl implements SkillRepository {
-    private FileProcessor fileProcessor = new FileProcessor("src/main/resources/Skill.txt");
+    private FileProcessor fileProcessor = new FileProcessor("src\\main\\resources\\Skill.txt");
 
     @Override
     public Skill getById(Long id) {
         Skill skill = null;
         try {
-            for (String line : fileProcessor.readFileLines()) {
-                if (line.startsWith("id=" + id)) {
-                    skill = deserialize(line);
+            for (String string : fileProcessor.readFile()) {
+                if (string.startsWith("id=" + id)) {
+                    skill = deserialize(string);
                     break;
                 }
             }
@@ -35,8 +34,8 @@ public class SkillRepositoryImpl implements SkillRepository {
     public List<Skill> getAll() {
         List<Skill> skills = new ArrayList<>();
         try {
-            for (String line : fileProcessor.readFileLines()) {
-                Skill skill = deserialize(line);
+            for (String string : fileProcessor.readFile()) {
+                Skill skill = deserialize(string);
                 if (skill.getId() != null && skill.getName() != null) {
                     skills.add(skill);
                 }
@@ -62,30 +61,21 @@ public class SkillRepositoryImpl implements SkillRepository {
         }
     }
 
-    public Long lastId() {
-        List<Skill> skills = getAll();
-        if (skills.size() == 0) {
-            return 0L;
-        }
-        Optional<Long> optional = skills.stream().map(Skill::getId).reduce((a, b) -> a.compareTo(b) >= 1 ? a : b);
-        return optional.orElse(null);
-    }
-
     @Override
-    public void update(Skill updatedSkill) throws RecordDoesNotExistException {
+    public void update(Skill skill) throws DoesNotExistException {
         List<Skill> skills = getAll();
-        boolean updated = skills.removeIf(skill -> skill.getId().equals(updatedSkill.getId()));
+        boolean updated = skills.removeIf(skl -> skl.getId().equals(skl.getId()));
         if (!updated) {
-            throw new RecordDoesNotExistException();
+            throw new DoesNotExistException();
         }
-        skills.add(updatedSkill);
+        skills.add(skill);
         serialize(skills);
     }
 
     private void serialize(Collection<Skill> collection) {
-        List<String> serialized = collection.stream().map(Skill::toString).collect(Collectors.toList());
+        List<String> serialized = collection.stream().map(this::skillToString).collect(Collectors.toList());
         try {
-            fileProcessor.writeFile(serialized);
+            fileProcessor.writeToFile(serialized);
         } catch (FileProcessingException e) {
             e.printStackTrace();
         }
@@ -95,16 +85,20 @@ public class SkillRepositoryImpl implements SkillRepository {
         Long id = null;
         String name = null;
 
-        String[] tokens = string.split(" ");
-        for (String token : tokens) {
-            if (token.startsWith("id=")) {
-                id = Long.parseLong(token.substring(3));
+        String[] parts = string.split("/");
+        for (String part : parts) {
+            if (part.startsWith("id=")) {
+                id = Long.parseLong(part.substring(3));
             }
-            if (token.startsWith("name=")) {
-                name = token.substring(5);
+            if (part.startsWith("name=")) {
+                name = part.substring(5);
             }
         }
         return new Skill(id, name);
+    }
+
+    private String skillToString(Skill skill) {
+        return "id=" + skill.getId() + "/name=" + skill.getName();
     }
 }
 

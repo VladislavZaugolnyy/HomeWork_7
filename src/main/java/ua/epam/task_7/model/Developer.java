@@ -1,59 +1,42 @@
 package ua.epam.task_7.model;
 
+import java.util.Collections;
 import java.util.Set;
 
-public class Developer {
-    private long ID;
-    private String firstName;
-    private String lastName;
-    private Set<Skill> skills;
+public class Developer extends BaseModel {
+    private String name;
     private Account account;
+    private Set<Skill> skills;
 
-    public Developer(long ID, String firstName, String lastName, Set<Skill> skills, Account account) {
-        this.ID = ID;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.skills = skills;
+    public Developer(Long id, String name, Account account, Set<Skill> skills) {
+        super(id);
+        this.name = name;
         this.account = account;
+        this.skills = Collections.unmodifiableSet(skills);
     }
 
-    public long getID() {
-        return ID;
+    public Long getId() {
+        return super.getId();
     }
 
-    public void setID(long ID) {
-        this.ID = ID;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public Set<Skill> getSkills() {
-        return skills;
-    }
-
-    public void setSkills(Set<Skill> skills) {
-        this.skills = skills;
+    public String getName() {
+        return name;
     }
 
     public Account getAccount() {
         return account;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public Set<Skill> getSkills() {
+        return skills;
+    }
+
+    @Override
+    public String toString() {
+        return "Developer{" +
+                "name='" + name + '\'' +
+                ", account=" + account +
+                ", skills=" + skills +
+                '}';
     }
 }

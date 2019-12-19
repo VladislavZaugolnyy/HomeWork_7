@@ -1,22 +1,19 @@
 package ua.epam.task_7.controller;
 
-import ua.epam.task_7.exceptions.RecordDoesNotExistException;
+import ua.epam.task_7.exceptions.DoesNotExistException;
+import ua.epam.task_7.messages.Messages;
 import ua.epam.task_7.model.Skill;
-import ua.epam.task_7.repository.repositoryImpl.SkillRepositoryImpl;
+import ua.epam.task_7.repository.SkillRepository;
+import ua.epam.task_7.repository.io.SkillRepositoryImpl;
 
 import java.util.List;
 
 public class SkillController {
-    private SkillRepositoryImpl repo = new SkillRepositoryImpl();
-    private final String skillNotFound = "Skill not found";
-    private final String alreadyExists = "Already exists";
-    private final String creationSuccessful = "Skill added to repository";
-    private final String complete = "operation completed";
-    private final String notComplete = "operation denied";
+    private SkillRepository skillRepository = new SkillRepositoryImpl();
 
     public String getAll() {
         StringBuilder stringBuilder = new StringBuilder();
-        List<Skill> skills = repo.getAll();
+        List<Skill> skills = skillRepository.getAll();
 
         for (Skill skill : skills) {
             stringBuilder.append(skill);
@@ -26,34 +23,34 @@ public class SkillController {
     }
 
     public String getById(long id) {
-        Skill skill = repo.getById(id);
+        Skill skill = skillRepository.getById(id);
         if (skill == null) {
-            return skillNotFound;
+            return Messages.SKILL_NOT_FOUND.getMessage();
         } else {
             return skill.toString();
         }
     }
 
     public String addSkill(String name) {
-        Long id = repo.lastId() + 1;
+        Long id = skillRepository.getLastId() + 1;
         Skill skill = new Skill(id, name);
-        List<Skill> skills = repo.getAll();
+        List<Skill> skills = skillRepository.getAll();
         if (skills.contains(skill)) {
-            return alreadyExists;
+            return Messages.SKILL_ALREADY_EXISTS.getMessage();
         } else {
-            repo.create(skill);
-            return creationSuccessful;
+            skillRepository.create(skill);
+            return Messages.SKILL_ADDED.getMessage();
         }
     }
 
     public String update(long id, String name) {
         Skill skill = new Skill(id, name);
         try {
-            repo.update(skill);
-            return complete;
-        } catch (RecordDoesNotExistException e) {
+            skillRepository.update(skill);
+            return Messages.SUCCESS.getMessage();
+        } catch (DoesNotExistException e) {
             e.printStackTrace();
-            return notComplete;
+            return Messages.FAIL.getMessage();
         }
     }
 }

@@ -1,17 +1,17 @@
 package ua.epam.task_7.util;
 
+import ua.epam.task_7.messages.Messages;
+
 import java.util.Scanner;
 
 public class InputReader {
     private Scanner scanner = new Scanner(System.in);
-    private String message = "Enter your choice ";
 
     public int getIntInput() {
         int result;
         do {
-            System.out.print(message);
             while (!scanner.hasNextInt()) {
-                System.out.println("\nWrong input");
+                System.out.println("\n" + Messages.WRONG_INPUT.getMessage());
                 scanner.next();
             }
             result = scanner.nextInt();
@@ -19,7 +19,7 @@ public class InputReader {
         return result;
     }
 
-    public String getStringInput() {
+    public String getInput() {
         scanner.nextLine();
         return scanner.nextLine();
     }

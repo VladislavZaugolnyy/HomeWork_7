@@ -1,30 +1,21 @@
 package ua.epam.task_7.model;
 
-public class Account {
-    private long ID;
-    private String accountName;
+public class Account extends BaseModel {
+    private String email;
     private AccountStatus status;
 
-    public Account(long ID, String accountName, AccountStatus status) {
-        this.ID = ID;
-        this.accountName = accountName;
+    public Account(Long id, String email, AccountStatus status) {
+        super(id);
+        this.email = email;
         this.status = status;
     }
 
-    public long getID() {
-        return ID;
+    public Long getId() {
+        return super.getId();
     }
 
-    public void setID(long ID) {
-        this.ID = ID;
-    }
-
-    public String getAccountName() {
-        return accountName;
-    }
-
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
+    public String getEmail() {
+        return email;
     }
 
     public AccountStatus getStatus() {
@@ -33,5 +24,13 @@ public class Account {
 
     public void setStatus(AccountStatus status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "info='" + email + '\'' +
+                ", status=" + status +
+                '}';
     }
 }
