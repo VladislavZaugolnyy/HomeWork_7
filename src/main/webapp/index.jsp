@@ -8,12 +8,12 @@
 
 <html lang="${param.lang}">
 <head>
-    <title>Developer CRUD REST App</title>
+    <title>CRUD REST</title>
 <body>
 
 <ul>
     <li><a href="?lang=en"><fmt:message key="label.lang.en" /></a></li>
-    <li><a href="?lang=ru"><fmt:message key="label.lang.fr" /></a></li>
+    <li><a href="?lang=fr"><fmt:message key="label.lang.fr" /></a></li>
 </ul>
 
 <h1>
