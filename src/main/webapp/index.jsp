@@ -32,8 +32,6 @@
     <li><fmt:message key="storage.message" /></li>
 </ul>
 <br>
-<p><fmt:message key="chain.message" /></p>
-
 <p><fmt:message key="endpoints.message" /></p>
 <ul>
     <li><fmt:message key="skillEndPoint.message" /></li>
