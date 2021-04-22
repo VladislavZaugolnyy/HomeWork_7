@@ -20,7 +20,7 @@
         <taglibs.version>1.1.2</taglibs.version>
         <junit.version>4.11</junit.version>
         <mockito.version>3.2.4</mockito.version>
-        <mybatis.version>3.4.6</mybatis.version>
+        <mybatis.version>3.5.6</mybatis.version>
         <mysql.version>8.0.15</mysql.version>
         <apache-dbcp.version>2.7.0</apache-dbcp.version>
         <lombok.version>1.18.10</lombok.version>
